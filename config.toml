@@ -189,46 +189,95 @@ uglyURLs = false
 
 [menu]
     ## 菜单栏
+    # [[menu.main]]
+    #     pageref = "/"
+    #     name = "首页"
+    #     weight = 1
+    #     pre = "internal"
+    #     post = "home"
+    #[[menu.main]]
+    #    pageref = "/posts/"
+    #    name = "文章"
+    #    weight = 2
+    #    pre = "internal"
+    #    post = "archive"
+    #[[menu.main]]
+    #    pageref = "/categories/"
+    #    name = "分类"
+    #    weight = 3
+    #    pre = "internal"
+    #    post = "th"
+    #[[menu.main]]
+    #    pageref = "/tags/"
+    #    name = "标签"
+    #    weight = 4
+    #    pre = "internal"
+    #    post = "tags"
      [[menu.main]]
          pageref = "/"
          name = "首页"
          weight = 1
          pre = "internal"
          post = "home"
-    [[menu.main]]
-        pageref = "/posts/"
-        name = "文章"
-        weight = 2
-        pre = "internal"
-        post = "archive"
-    [[menu.main]]
-        pageref = "/categories/"
-        name = "分类"
-        weight = 3
-        pre = "internal"
-        post = "th"
-    [[menu.main]]
-        pageref = "/tags/"
-        name = "标签"
-        weight = 4
-        pre = "internal"
-        post = "tags"
-    [[menu.main]]
-        pageref = "/about/"
-        name = "关于"
-        weight = 5
-        pre = "internal"
-        post = "user-circle"
-    [[menu.main]]
-        weight = 6
-        identifier = "theme-switcher"
-    [[menu.main]]
-        weight = 7
-        identifier = "lang-switcher"
-    # [[menu.main]]
-    #     weight = 8
-    #     identifier = "search"
-    #     post = "search"
+     [[menu.main]]
+         pageref = "/posts/"
+         name = "文章"
+         weight = 2
+         pre = "internal"
+         post = "archive"
+         #identifier = ""
+     [[menu.main]]
+         pageref = "/categories/"
+         name = "分类"
+         weight = 3
+         pre = "internal"
+         post = "th"
+     [[menu.main]]
+         pageref = "/tags/"
+         name = "标签"
+         weight = 4
+         pre = "internal"
+         post = "tags"
+     [[menu.main]]
+         pageref = "/about/"
+         name = "关于"
+         weight = 5
+         pre = "internal"
+         post = "user-circle"
+     [[menu.main]]
+         weight = 6
+         identifier = "theme-switcher"
+     [[menu.main]]
+         weight = 7
+         identifier = "lang-switcher"
+     [[menu.main]]
+         weight = 8
+         identifier = "search"
+         post = "search"
+
+     ## 社交栏
+     [[menu.socials]]
+         url = "https://github.com/Dawson-Jones"
+         name = "GitHub"
+         weight = 1
+         pre = "external"
+     [[menu.socials]]
+         url = "https://t.me/dawson_jones"
+         name = "Telegram"
+         weight = 2
+         pre = "external"
+     #[[menu.socials]]
+     #    url = "https://twitter.com/reuixiy"
+     #    name = "Twitter"
+     #    weight = 3
+     #    pre = "external"
+
+     ## 链接栏
+     [[menu.links]]
+         pageref = "/"
+         name = "Home"
+         weight = 1
+         pre = "internal"
 
 
 
