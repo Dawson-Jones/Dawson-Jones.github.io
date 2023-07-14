@@ -1,9 +1,9 @@
 ---
-title: "从零开始创建一个容器-namespace"
+title: "从零开始创建一个容器之namespace 1.overview"
 date: 2023-07-05T01:10:36+08:00
-draft: true
-tags: ["tech"]
-categories: ["tech"]
+draft: false
+tags: ["tech", "clound native", "namespace"]
+categories: ["namespace"]
 ---
 
 容器化需要 linux 提供的三个能力
@@ -138,7 +138,7 @@ int ioctl(int fd, unsigned long request, ...);
 
 特殊情况: (暂时不需要看)
 
-- `/proc/pid/ns/*` 文件被打开或 mount 存在
+- `/proc/pid/ns/*` 文件被打开或 mount 存在, 比如: `mount --bind /proc/1000/ns/ipc /other/file`
 - 有子 namespace
 - user namespace, 有多个 nonuser namespace
 - PID namespace，并且有一个进程通过 `/proc/<pid>/ns/pid_for_children` 符号链接引用该 namespace (不太明白)
