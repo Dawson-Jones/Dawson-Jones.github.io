@@ -42,11 +42,11 @@ UTS       CLONE_NEWUTS      Hostname and NIS domain name
 
 ### 查看进程所属的 namespace
 
-每个进程的 namespace 信息都可以在`/proc/<pid>/ns/`看到, 文件描述符, 可以当作 `setns` 函数的参数
+每个进程的 namespace 信息都可以在`/proc/<pid>/ns/`看到, 文件描述符可以当作 `setns` 函数的参数
 
-- mount 该目录的文件到其他地方会使当前pid 所在的 namespace 存活, 即使所有 namespace 的进程都终止(TODO: 还不太明白)
+- mount 该目录的文件到其他地方会使当前 pid 所在的 namespace 存活, 即使所有 namespace 的进程都终止
 - 打开目录下的某一文件, 会返回相应的 namespace, 也会使当前pid 所在的 namespace 存活, 即使所有 namespace 的进程都终止
-- 如果两个进程在同一个 namespace, 软连接将会是同一个, (TODO: 可以通过调用 stat 检查 stat.st_dev 和 stat.st+ino )
+- 如果两个进程在同一个 namespace, 软连接将会是同一个(TODO: 可以通过调用 stat 检查 stat.st_dev 和 stat.st_ino )
 - 数字是 inode number
 
 ```bash

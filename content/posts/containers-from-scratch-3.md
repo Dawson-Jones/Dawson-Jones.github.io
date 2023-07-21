@@ -8,6 +8,11 @@ categories: ["namespace"]
 
 pid namespace 隔离的是进程 id, 不同的 namespace 可以用相同的进程 id, 和 linux 系统一样, PID 为 1 的 init 进程为非常特殊, 它是 namespace 中的第一个进程, 并负责 namespace 中的某些管理任务
 
+`setns` 和 `unshare` 对待 pid namespace 是特殊的, 
+
+- pid ns: 在进程创建的时候决定, 且此后不能更改, 但是子进程会正常创建在 ns 中
+- others: 系统调用会修改调用者的 ns
+
 
 
 ## 代码
@@ -97,7 +102,7 @@ ls: cannot read symbolic link 'self': No such file or directory
 ls: cannot read symbolic link 'thread-self': No such file or directory
 
 # 进入 namespace 后, 该错误消失
-bytedance@ubuntu:/proc2$ sudo nsenter --pid=/proc/62553/ns/pid
+# bytedance@ubuntu:/proc2$ sudo nsenter --pid=/proc/62553/ns/pid
 bytedance@ubuntu:/proc2$ sudo nsenter -p -t 62553
 root@ubuntu:/proc2#
 root@ubuntu:/home/bytedance# cd /proc2/
@@ -112,7 +117,7 @@ root@ubuntu:/proc2# ls
 
 
 
-ps 工具依赖 /proc, 所以将。procfs mount 到 /proc 是有必要的, 有两种方式可以实现
+ps 工具依赖 /proc, 所以将 procfs mount 到 /proc 是有必要的, 有两种方式可以实现
 
 - 如果子进程创建时使用了CLONE_NEWNS, 子进程会在一个不同的 mount namespace, 这种情况下 mount 新的 procfs 到 /proc 不会有问题
 
