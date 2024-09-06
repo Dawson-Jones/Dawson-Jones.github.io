@@ -89,12 +89,12 @@ int main(int argc, char *argv[])
 ## 结果
 
 ```bash
-bytedance@ubuntu:~/project/C-program-language/namespace/user_ns$ id -u
+bytedance@ubuntu:$ id -u
 1000
-bytedance@ubuntu:~/project/C-program-language/namespace/user_ns$ id -g
+bytedance@ubuntu:$ id -g
 1000
 
-bytedance@ubuntu:~/project/C-program-language/namespace/user_ns$ ./demo_userns
+bytedance@ubuntu:$ ./demo_userns
 
 eUID = 65534; eGID = 65534;   capabilities: =ep
 ```
@@ -314,10 +314,10 @@ int main(int argc, char *argv[]) {
 
 ```bash
 # 第一个 shell
-bytedance@ubuntu:~/project/C-program-language/namespace/user_ns$ ./userns_child_exec -v -U -M '0 1000 1' -G '0 1000 1' bash
+bytedance@ubuntu:$ ./userns_child_exec -v -U -M '0 1000 1' -G '0 1000 1' bash
 ./userns_child_exec: PID of child created by clone() is 53094
 message received from parent: 0
-root@ubuntu:~/project/C-program-language/namespace/user_ns#
+root@ubuntu:#
 ```
 
 ```bash
@@ -333,22 +333,22 @@ bytedance@ubuntu:~$ ll /proc/53094/uid_map
 如果使用 `ns_child_exec`会遇到一个问题
 
 ```bash
-bytedance@ubuntu:~/project/C-program-language/namespace/user_ns$ ../ns_child_exec -U bash
-nobody@ubuntu:~/project/C-program-language/namespace/user_ns$ cat /proc/$$/status | egrep 'Cap(Inh|Prm|Eff)'
+bytedance@ubuntu:$ ../ns_child_exec -U bash
+nobody@ubuntu:$ cat /proc/$$/status | egrep 'Cap(Inh|Prm|Eff)'
 CapInh:	0000000000000000
 CapPrm:	0000000000000000
 CapEff:	0000000000000000
 
 # 没有权限
-nobody@ubuntu:~/project/C-program-language/namespace/user_ns$ echo '0 1000 1' > /proc/$$/uid_map
+nobody@ubuntu:$ echo '0 1000 1' > /proc/$$/uid_map
 bash: echo: write error: Operation not permitted
-nobody@ubuntu:~/project/C-program-language/namespace/user_ns$ exit
+nobody@ubuntu:$ exit
 exit
 
-bytedance@ubuntu:~/project/C-program-language/namespace/user_ns$ ./userns_child_exec -v -U -M '0 1000 1' -G '0 1000 1' bash
+bytedance@ubuntu:$ ./userns_child_exec -v -U -M '0 1000 1' -G '0 1000 1' bash
 ./userns_child_exec: PID of child created by clone() is 53127
 message received from parent: 0
-root@ubuntu:~/project/C-program-language/namespace/user_ns# cat /proc/$$/status | egrep 'Cap(Inh|Prm|Eff)'
+root@ubuntu:# cat /proc/$$/status | egrep 'Cap(Inh|Prm|Eff)'
 CapInh:	0000000000000000
 CapPrm:	000001ffffffffff
 CapEff:	000001ffffffffff
@@ -360,34 +360,34 @@ CapEff:	000001ffffffffff
 
 ```bash
 # 第一个 shell
-bytedance@ubuntu:~/project/C-program-language/namespace/user_ns$ ./userns_child_exec -v -U -M '0 1000 1' -G '0 1000 1' bash
+bytedance@ubuntu:$ ./userns_child_exec -v -U -M '0 1000 1' -G '0 1000 1' bash
 ./userns_child_exec: PID of child created by clone() is 53202
 message received from parent: 0
-root@ubuntu:~/project/C-program-language/namespace/user_ns# id
+root@ubuntu:# id
 uid=0(root) gid=0(root) groups=0(root),65534(nogroup)
 
 # 查看当前进程的映射
-root@ubuntu:~/project/C-program-language/namespace/user_ns# cat /proc/53202/uid_map
+root@ubuntu:# cat /proc/53202/uid_map
          0       1000          1
 # 查看第二个 shell 进程的映射, 和在第二个进程看到的不一样
 # 第二个 shell 的 uid 是200, 映射的是 0, 而本 user ns 的 0 映射的是 1000
-root@ubuntu:~/project/C-program-language/namespace/user_ns# cat /proc/53195/uid_map
+root@ubuntu:# cat /proc/53195/uid_map
        200          0          1
 ```
 
 ```bash
 # 第二个 shell
-bytedance@ubuntu:~/project/C-program-language/namespace/user_ns$ ./userns_child_exec -v -U -M '200 1000 1' -G '200 1000 1' bash
+bytedance@ubuntu:$ ./userns_child_exec -v -U -M '200 1000 1' -G '200 1000 1' bash
 ./userns_child_exec: PID of child created by clone() is 53195
 message received from parent: 0
-I have no name!@ubuntu:~/project/C-program-language/namespace/user_ns$ id
+I have no name!@ubuntu:$ id
 uid=200 gid=200 groups=200,65534(nogroup)
 
 # 查看第一个 shell 进程的映射
 # 第一个 shell 的 uid 是 0, 映射的 ID-outside-ns 是 200, 因为 200 对于该 user ns 映射的 ID-outside-ns 是 1000
-I have no name!@ubuntu:~/project/C-program-language/namespace/user_ns$ cat /proc/53202/uid_map
+I have no name!@ubuntu:$ cat /proc/53202/uid_map
          0        200          1
-I have no name!@ubuntu:~/project/C-program-language/namespace/user_ns$ cat /proc/53195/uid_map
+I have no name!@ubuntu:$ cat /proc/53195/uid_map
        200       1000          1
 ```
 
@@ -504,19 +504,19 @@ int main(int argc, char *argv[]) {
 **结果**
 
 ```bash
-bytedance@ubuntu:~/project/C-program-language/namespace/user_ns$ id -u
+bytedance@ubuntu:$ id -u
 1000
 # 父 user ns
-bytedance@ubuntu:~/project/C-program-language/namespace/user_ns$ readlink /proc/$$/ns/user
+bytedance@ubuntu:$ readlink /proc/$$/ns/user
 user:[4026531837]
 
 # child pid 是 55470
-bytedance@ubuntu:~/project/C-program-language/namespace/user_ns$ ./userns_child_exec -v -U -M '0 1000 1' -G '0 1000 1' bash
+bytedance@ubuntu:$ ./userns_child_exec -v -U -M '0 1000 1' -G '0 1000 1' bash
 ./userns_child_exec: PID of child created by clone() is 55470
 message received from parent: 0
 
 # 新的 user ns
-root@ubuntu:~/project/C-program-language/namespace/user_ns# readlink /proc/$$/ns/user
+root@ubuntu:# readlink /proc/$$/ns/user
 user:[4026532318]
 ```
 
@@ -526,11 +526,11 @@ user:[4026532318]
 
 ```bash
 # 确定该 shell 在父 user ns 中
-bytedance@ubuntu:~/project/C-program-language/namespace/user_ns$ readlink /proc/$$/ns/user
+bytedance@ubuntu:$ readlink /proc/$$/ns/user
 user:[4026531837]
 
 # 父进程成功进入, 子进程进入失败
-bytedance@ubuntu:~/project/C-program-language/namespace/user_ns$ ./userns_setns_test /proc/55470/ns/user
+bytedance@ubuntu:$ ./userns_setns_test /proc/55470/ns/user
 parent:  readlink("/proc/self/ns/user") ==> user:[4026531837]
 parent:  setns() succeeded
 
@@ -552,31 +552,31 @@ child:  setns() failed: Operation not permitted
 
 ```bash
 # 单独创建 uts ns, 失败
-bytedance@ubuntu:~/project/C-program-language/namespace/user_ns$ unshare -u bash
+bytedance@ubuntu:$ unshare -u bash
 unshare: unshare failed: Operation not permitted
 # 创建 user ns 和 uts ns, 成功
-bytedance@ubuntu:~/project/C-program-language/namespace/user_ns$ unshare -U -u bash
-nobody@ubuntu:~/project/C-program-language/namespace/user_ns$ exit
+bytedance@ubuntu:$ unshare -U -u bash
+nobody@ubuntu:$ exit
 
 # 当前 hostname 
-bytedance@ubuntu:~/project/C-program-language/namespace/user_ns$ uname -n
+bytedance@ubuntu:$ uname -n
 ubuntu
 
 # 进入 user ns 和 uts ns (非特权进程)
-bytedance@ubuntu:~/project/C-program-language/namespace/user_ns$ ./userns_child_exec -v -u -U -M '0 1000 1' -G '0 1000 1' bash
+bytedance@ubuntu:$ ./userns_child_exec -v -u -U -M '0 1000 1' -G '0 1000 1' bash
 ./userns_child_exec: PID of child created by clone() is 79954
 message received from parent: 0
-root@ubuntu:~/project/C-program-language/namespace/user_ns# id
+root@ubuntu:# id
 uid=0(root) gid=0(root) groups=0(root),65534(nogroup)
-root@ubuntu:~/project/C-program-language/namespace/user_ns# cat /proc/$$/status | egrep 'Cap(Inh|Prm|Eff)'
+root@ubuntu:# cat /proc/$$/status | egrep 'Cap(Inh|Prm|Eff)'
 CapInh:	0000000000000000
 CapPrm:	000001ffffffffff
 CapEff:	000001ffffffffff
 
 # 修改 ns 的名字
-root@ubuntu:~/project/C-program-language/namespace/user_ns# hostname dawson
-root@ubuntu:~/project/C-program-language/namespace/user_ns# exec bash
-root@dawson:~/project/C-program-language/namespace/user_ns# uname -n
+root@ubuntu:# hostname dawson
+root@ubuntu:# exec bash
+root@dawson:# uname -n
 dawson
 ```
 

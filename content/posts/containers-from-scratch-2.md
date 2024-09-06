@@ -11,7 +11,7 @@ namespace 包装全局系统资源到一个抽象中, 使 namespace 中的进程
 每个进程都有一个 `/proc/PID/ns` 目录, 每个类型的 namespace 都有一个文件, 这些文件是一个特殊的符号链接(symbolic link), 可以在进程关联的 namespace 上做一些操作
 
 ```bash
-ubuntu@bytedance:~/project/my_project/C/C-program-language/namespace$ ls -l /proc/$$/ns/
+ubuntu@bytedance:$ ls -l /proc/$$/ns/
 total 0
 lrwxrwxrwx 1 ubuntu ubuntu 0 Jul 13 01:54 cgroup -> 'cgroup:[4026531835]'
 lrwxrwxrwx 1 ubuntu ubuntu 0 Jul 13 01:54 ipc -> 'ipc:[4026531839]'
@@ -136,28 +136,28 @@ int main(int argc, char *argv[]) {
 ### 输出
 
 ```bash
-ubuntu@bytedance:~/project/my_project/C/C-program-language/namespace$ sudo ./clone_uts_manural dawson
+ubuntu@bytedance:$ sudo ./clone_uts_manural dawson
 clone() returned 19800	# 子进程 pid
 uts.nodename in child:  dawson	# 子进程 hostname
-root@dawson:/home/ubuntu/project/my_project/C/C-program-language/namespace# uts.nodename in parent: bytedance	# 父进程 hostname
+root@dawson:# uts.nodename in parent: bytedance	# 父进程 hostname
 
-root@dawson:/home/ubuntu/project/my_project/C/C-program-language/namespace# hostname
+root@dawson:# hostname
 dawson
 
 # pstree 查看进程关系, 能够看到所有的进程关系, 也说明了 pid 没有被隔离
-root@dawson:/home/ubuntu/project/my_project/C/C-program-language/namespace# pstree -pl
+root@dawson:# pstree -pl
 systemd(1)───sshd(712)───sshd(16181)───sshd(16259)───bash(16260)───sudo(19797)───sudo(19798)───clone_uts_manur(19799)───bash(19800)───pstree(19808)
 
 # 当前 bash pid
-root@dawson:/home/ubuntu/project/my_project/C/C-program-language/namespace# echo $$
+root@dawson:# echo $$
 19800
 
 # 当前 bash 的 uts namespace
-root@dawson:/home/ubuntu/project/my_project/C/C-program-language/namespace# readlink /proc/self/ns/uts
+root@dawson:# readlink /proc/self/ns/uts
 uts:[4026532204]
 
 # 运行 clone_uts_manur 的 uts
-root@dawson:/home/ubuntu/project/my_project/C/C-program-language/namespace# readlink /proc/19799/ns/uts
+root@dawson:# readlink /proc/19799/ns/uts
 uts:[4026531838]
 
 # 当我打开一个新的 bash 的时候, uts namespace 和 clone_uts_manur 的 一样
@@ -165,19 +165,19 @@ ubuntu@bytedance:~$ readlink /proc/self/ns/uts
 uts:[4026531838]
 
 # 在 dawson 这个 namespace 中运行 clone_uts_manural 程序, 会创建一个新的 uts namespace
-root@dawson:/home/ubuntu/project/my_project/C/C-program-language/namespace# ./clone_uts_manural nera
+root@dawson:# ./clone_uts_manural nera
 clone() returned 19912
 uts.nodename in child:  nera
-root@nera:/home/ubuntu/project/my_project/C/C-program-language/namespace# uts.nodename in parent: dawson
+root@nera:# uts.nodename in parent: dawson
 
-root@nera:/home/ubuntu/project/my_project/C/C-program-language/namespace# pstree -pl
+root@nera:# pstree -pl
 systemd(1)───sshd(712)───sshd(16181)───sshd(16259)───bash(16260)───sudo(19797)───sudo(19798)───clone_uts_manur(19799)───bash(19800)───clone_uts_manur(19911)───bash(19912)───pstree(19918)
 
 # 退出 nera, 回到了 dawson
-root@nera:/home/ubuntu/project/my_project/C/C-program-language/namespace# exit
+root@nera:# exit
 exit
 child has terninated
-root@dawson:/home/ubuntu/project/my_project/C/C-program-language/namespace# hostname
+root@dawson:# hostname
 dawson
 ```
 
@@ -278,17 +278,17 @@ int main(int argc, char const *argv[]) {
 ### 输出
 
 ```bash
-ubuntu@bytedance:~/project/my_project/C/C-program-language/namespace$ sudo ./setns_manural /proc/19800/ns/uts bash
-root@dawson:/home/ubuntu/project/my_project/C/C-program-language/namespace# hostname
+ubuntu@bytedance:$ sudo ./setns_manural /proc/19800/ns/uts bash
+root@dawson:# hostname
 dawson
 
 # 和上面 clone 的 bash 在同一个 uts namespace
-root@dawson:/home/ubuntu/project/my_project/C/C-program-language/namespace# readlink /proc/self/ns/uts
+root@dawson:# readlink /proc/self/ns/uts
 uts:[4026532204]
-root@dawson:/home/ubuntu/project/my_project/C/C-program-language/namespace# echo $$
+root@dawson:# echo $$
 20056
 
-root@dawson:/home/ubuntu/project/my_project/C/C-program-language/namespace# pstree -pl
+root@dawson:# pstree -pl
 ├─sshd(16181)───sshd(16259)───bash(16260)───sudo(19797)───sudo(19798)───clone_uts_manur(19799)───bash(19800)
 ├─sshd(19575)───sshd(19622)───bash(19623)───bash(19628)			└─sshd(19924)───sshd(19980)───bash(19981)───sudo(20054)───sudo(20055)───bash(20056)───pstree(20062)
 ```
@@ -382,24 +382,24 @@ int main(int argc, char *argv[]) {
 
 ```bash
 # 当前 uts
-ubuntu@bytedance:~/project/my_project/C/C-program-language/namespace$ readlink /proc/$$/ns/uts
+ubuntu@bytedance:$ readlink /proc/$$/ns/uts
 uts:[4026531838]
 
-ubuntu@bytedance:~/project/my_project/C/C-program-language/namespace$ sudo ./unshare_manural -u bash
+ubuntu@bytedance:$ sudo ./unshare_manural -u bash
 pid: 20138
 
 # 当前 bash 还是之前的进程
-root@bytedance:/home/ubuntu/project/my_project/C/C-program-language/namespace# echo $$
+root@bytedance:# echo $$
 20138
 
 # 设置 hostname
-root@bytedance:/home/ubuntu/project/my_project/C/C-program-language/namespace# hostname dawson
-root@bytedance:/home/ubuntu/project/my_project/C/C-program-language/namespace# exec bash
-root@dawson:/home/ubuntu/project/my_project/C/C-program-language/namespace# echo $$
+root@bytedance:# hostname dawson
+root@bytedance:# exec bash
+root@dawson:# echo $$
 20138
 
 # 读取当前进程的 uts namespace 的 inode, 与之前的不同
-root@dawson:/home/ubuntu/project/my_project/C/C-program-language/namespace# readlink /proc/self/ns/uts
+root@dawson:# readlink /proc/self/ns/uts
 uts:[4026532205]
 ```
 

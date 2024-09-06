@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
 ## 输出
 
 ```bash
-bytedance@ubuntu:~/project/C-program-language/namespace$ sudo ./clone_pidns_sleep /proc2
+bytedance@ubuntu:$ sudo ./clone_pidns_sleep /proc2
 # 在默认 namespace 的 pid
 PID returned by clone(): 62553
 # 在新的 namespace 中的 pid
@@ -141,7 +141,7 @@ ps 工具依赖 /proc, 所以将 procfs mount 到 /proc 是有必要的, 有两�
 
   输出
   ```bash
-  bytedance@ubuntu:~/project/C-program-language/namespace$ sudo ./clone_pidns_sleep /proc
+  bytedance@ubuntu:$ sudo ./clone_pidns_sleep /proc
   PID returned by clone(): 7967
   child_func(): PID = 1
   child_func(): PPID = 0
@@ -174,15 +174,15 @@ ps 工具依赖 /proc, 所以将 procfs mount 到 /proc 是有必要的, 有两�
 
 
 ```bash
-bytedance@ubuntu:~/project/C-program-language/namespace$ ps -C sleep -C clone_pidns_sleep -o "pid ppid stat cmd"
+bytedance@ubuntu:$ ps -C sleep -C clone_pidns_sleep -o "pid ppid stat cmd"
     PID    PPID STAT CMD
    8108    8107 T+   ./clone_pidns_sleep /proc2
    8109    8108 S+   sleep 600
 
 # 两个进程在不同的 pid ns 中
-bytedance@ubuntu:~/project/C-program-language/namespace$ sudo readlink /proc/8108/ns/pid
+bytedance@ubuntu:$ sudo readlink /proc/8108/ns/pid
 pid:[4026531836]
-bytedance@ubuntu:~/project/C-program-language/namespace$ sudo readlink /proc/8109/ns/pid
+bytedance@ubuntu:$ sudo readlink /proc/8109/ns/pid
 pid:[4026532306]
 ```
 

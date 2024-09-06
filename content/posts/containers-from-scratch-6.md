@@ -26,11 +26,11 @@ subtrees 有几种传播类型, 用来判断当 mount point 创建和销毁的�
 ## Peer groups
 
 ```bash
-bytedance@ubuntu:~/project/C-program-language/a_n_so$ sudo mount --make-private /
+bytedance@ubuntu:$ sudo mount --make-private /
 
 # 没有没关系, 大致是这么个意思, 可以看图解
-bytedance@ubuntu:~/project/C-program-language/a_n_so$ sudo mkdir /X
-bytedance@ubuntu:~/project/C-program-language/a_n_so$ sudo mount --make-shared /dev/sda2 /X
+bytedance@ubuntu:$ sudo mkdir /X
+bytedance@ubuntu:$ sudo mount --make-shared /dev/sda2 /X
 bytedance@ubuntu:/X$ sudo mkdir /Y
 bytedance@ubuntu:/X$ sudo mount --make-shared /dev/sda1 /Y
 
